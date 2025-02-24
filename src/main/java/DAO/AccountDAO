@@ -1,0 +1,90 @@
+package Application.DAO;
+
+import Application.Model.Author;
+import Application.Util.ConnectionUtil;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * A DAO is a class that mediates the transformation of data between the format of objects in Java to rows in a
+ * database. The methods here are mostly filled out, you will just need to add a SQL statement.
+ *
+ * We may assume that the database has already created a table named 'author'.
+ * It contains similar values as the Author class:
+ * id, which is of type int and is a primary key,
+ * name, which is of type varchar(255).
+ */
+public class AccountDAO {
+
+    /**
+     * TODO: retrieve all authors from the Author table.
+     * You only need to change the sql String.
+     * @return all Authors.
+     */
+    public boolean createUser(String username, String password){
+        Connection connection = ConnectionUtil.getConnection();
+        Account newAccount = new Account(username, password);
+        try {
+            //Write SQL logic here
+            String sql = "SELECT * FROM author;";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()){
+                Author author = new Author(rs.getInt("id"), rs.getString("name"));
+              
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return authors;
+    }
+
+    
+    public Account insertAccount(String username, String password){
+        Connection connection = ConnectionUtil.getConnection();
+        Account newAccount = new Account(username, password);
+        try {
+//          Write SQL logic here. You should only be inserting with the username column and password, so that the database may
+//          automatically generate a primary key.
+            String sql = "INSERT INTO Account (username, password) VALUES (?, ?);";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            //write preparedStatement's setString method here.
+            preparedStatement.setString(1, newAccount.getUsername());
+            preparedStatement.setString(2, newAccount.getPassword());
+            preparedStatement.executeUpdate();
+            ResultSet pkeyResultSet = preparedStatement.getGeneratedKeys();
+            if(pkeyResultSet.next()){
+                int generated_account_id = (int) pkeyResultSet.getLong(1);
+                return new Account(generated_account_id, newAccount.getUsername(), newAccount.getPassword());
+            }
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public Account loginAccount(String username, String password){
+        Connection connection = ConnectionUtil.getConnection();
+        try {
+//          Write SQL logic here. You should only be inserting with the username column and password, so that the database may
+//          automatically generate a primary key.
+            String sql = "SELECT * FROM Account WHERE username = ? AND password = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            //write preparedStatement's setString method here.
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            preparedStatement.executeUpdate();
+            ResultSet pkeyResultSet = preparedStatement.getGeneratedKeys();
+            if(pkeyResultSet.next()){
+                int generated_account_id = (int) pkeyResultSet.getLong(1);
+                return new Account(generated_account_id, username, password);
+            }
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+}

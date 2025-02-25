@@ -1,7 +1,7 @@
-package Application.DAO;
+package DAO;
 
-import Application.Model.Author;
-import Application.Util.ConnectionUtil;
+import Model.Account;
+import Util.ConnectionUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,30 +17,27 @@ import java.util.List;
  * name, which is of type varchar(255).
  */
 public class AccountDAO {
-
-    /**
-     * TODO: retrieve all authors from the Author table.
-     * You only need to change the sql String.
-     * @return all Authors.
-     */
-    public boolean createUser(String username, String password){
+    
+    public Account getAccount(String username){
         Connection connection = ConnectionUtil.getConnection();
-        Account newAccount = new Account(username, password);
         try {
             //Write SQL logic here
-            String sql = "SELECT * FROM author;";
+            String sql = "SELECT * FROM Account WHERE username = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, username);
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()){
-                Author author = new Author(rs.getInt("id"), rs.getString("name"));
-              
+                Account account = new Account(rs.getInt("account_id"),
+                rs.getString("username"),
+                rs.getString("Password"));
+                return account;
+            }
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
-        return authors;
+        return null;
     }
 
-    
     public Account insertAccount(String username, String password){
         Connection connection = ConnectionUtil.getConnection();
         Account newAccount = new Account(username, password);

@@ -1,7 +1,7 @@
-package Application.DAO;
+package DAO;
 
-import Application.Util.ConnectionUtil;
-import Application.Model.Book;
+import Util.ConnectionUtil;
+import Model.Message;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -113,7 +113,7 @@ public class MessageDAO {
             String sql = "DELETE FROM Message WHERE message_id = ?;" ;
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             //write preparedStatement's setString and setInt methods here.
-            preparedStatement.setInt(1, id());
+            preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
             return message;
         }catch(SQLException e){

@@ -65,7 +65,7 @@ public class MessageService {
         return messageDAO.deleteMessageById(id);
     }
 
-    public Message updateMessageById(int id, String text) {
+    public Message updateMessageById(int id, Message text) {
         return messageDAO.UpdateMessage(id, text);
     }
 

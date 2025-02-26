@@ -41,9 +41,9 @@ public class AccountService {
     
     //@return all authors
      
-    public Account login(String username, String password) 
+    public Account login(Account account) 
     {
-        return accountDAO.loginAccount(username, password);
+        return accountDAO.loginAccount(account);
     }
     /**
      * TODO: Use the AuthorDAO to persist an author. The given Author will not have an id provided.
@@ -51,11 +51,11 @@ public class AccountService {
      * @param author an author object.
      * @return The persisted author if the persistence is successful.
      */
-    public Account addAccount(String username, String password) 
+    public Account addAccount(Account account) 
     {
-        if(username != "" && password.length() >= 4 && accountDAO.getAccount(username) == null)
+        if(account.getUsername() != "" && account.getPassword().length() >= 4 && accountDAO.getAccount(account.getUsername()) == null)
         {
-            return accountDAO.insertAccount(username, password);
+            return accountDAO.insertAccount(account);
         }
         return null;
     }

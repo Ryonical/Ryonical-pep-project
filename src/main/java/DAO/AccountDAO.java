@@ -38,9 +38,8 @@ public class AccountDAO {
         return null;
     }
 
-    public Account insertAccount(String username, String password){
+    public Account insertAccount(Account account){
         Connection connection = ConnectionUtil.getConnection();
-        Account newAccount = new Account(username, password);
         try {
 //          Write SQL logic here. You should only be inserting with the username column and password, so that the database may
 //          automatically generate a primary key.
@@ -48,13 +47,12 @@ public class AccountDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             //write preparedStatement's setString method here.
-            preparedStatement.setString(1, newAccount.getUsername());
-            preparedStatement.setString(2, newAccount.getPassword());
+            preparedStatement.setString(1, account.getUsername());
+            preparedStatement.setString(2, account.getPassword());
             preparedStatement.executeUpdate();
             ResultSet pkeyResultSet = preparedStatement.getGeneratedKeys();
             if(pkeyResultSet.next()){
-                int generated_account_id = (int) pkeyResultSet.getLong(1);
-                return new Account(generated_account_id, newAccount.getUsername(), newAccount.getPassword());
+                return account;
             }
         }catch(SQLException e){
             System.out.println(e.getMessage());
@@ -62,7 +60,7 @@ public class AccountDAO {
         return null;
     }
 
-    public Account loginAccount(String username, String password){
+    public Account loginAccount(Account account){
         Connection connection = ConnectionUtil.getConnection();
         try {
 //          Write SQL logic here. You should only be inserting with the username column and password, so that the database may
@@ -71,13 +69,14 @@ public class AccountDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             //write preparedStatement's setString method here.
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
+            preparedStatement.setString(1, account.getUsername());
+            preparedStatement.setString(2, account.getPassword());
             preparedStatement.executeUpdate();
             ResultSet pkeyResultSet = preparedStatement.getGeneratedKeys();
             if(pkeyResultSet.next()){
                 int generated_account_id = (int) pkeyResultSet.getLong(1);
-                return new Account(generated_account_id, username, password);
+                account.setAccount_id(generated_account_id);
+                return account;
             }
         }catch(SQLException e){
             System.out.println(e.getMessage());

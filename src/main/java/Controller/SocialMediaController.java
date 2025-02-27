@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 /**
- * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
+ * You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
  * found in readme.md as well as the test cases. You should
  * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
  */
@@ -34,15 +34,14 @@ public class SocialMediaController {
      */
     public Javalin startAPI() {
         Javalin app = Javalin.create();
-        app.post("/localhost:8080/register", this::newUserHandler);
-        app.post("/localhost:8080/login", this::loginHandler);
-        app.post("/localhost:8080/messages", this::createMessageHandler);
-        app.get("/localhost:8080/messages", this::getAllMessageHandler);
-        app.get("/localhost:8080/messages/{message_id}", this::getMessageIdHandler);
-        app.delete("/localhost:8080/messages/{message_id}", this::deleteMessageIdHandler);
-        app.patch("/localhost:8080/messages/{message_id}", this::patchMessageIdHandler);
-        app.get("/localhost:8080/accounts/{account_id}/messages", this::getAccountMessageHandler);
-        app.start(8080);
+        app.post("/register", this::newUserHandler);
+        app.post("/login", this::loginHandler);
+        app.post("/messages", this::createMessageHandler);
+        app.get("/messages", this::getAllMessageHandler);
+        app.get("/messages/{message_id}", this::getMessageIdHandler);
+        app.delete("/messages/{message_id}", this::deleteMessageIdHandler);
+        app.patch("/messages/{message_id}", this::patchMessageIdHandler);
+        app.get("/accounts/{account_id}/messages", this::getAccountMessageHandler);
 
         return app;
     }
@@ -50,10 +49,11 @@ public class SocialMediaController {
     /**
      * This is an example handler for an example endpoint.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
-     */
+     
     private void exampleHandler(Context context) {
         context.json("sample text");
     }
+    */
     private void newUserHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(ctx.body(), Account.class);
@@ -89,7 +89,6 @@ public class SocialMediaController {
 
     private void getAllMessageHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        Message message = mapper.readValue(ctx.body(), Message.class);
         List<Message> allMessage = messageService.getAllMessages();
         if(allMessage != null){
             ctx.json(mapper.writeValueAsString(allMessage));

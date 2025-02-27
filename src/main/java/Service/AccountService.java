@@ -37,20 +37,11 @@ public class AccountService {
         this.accountDAO = accountDAO;
     }
 
-    //TODO: Use the AuthorDAO to retrieve all authors.
-    
-    //@return all authors
-     
     public Account login(Account account) 
     {
         return accountDAO.loginAccount(account);
     }
-    /**
-     * TODO: Use the AuthorDAO to persist an author. The given Author will not have an id provided.
-     *
-     * @param author an author object.
-     * @return The persisted author if the persistence is successful.
-     */
+    
     public Account addAccount(Account account) 
     {
         if(account.getUsername() != "" && account.getPassword().length() >= 4 && accountDAO.getAccount(account.getUsername()) == null)

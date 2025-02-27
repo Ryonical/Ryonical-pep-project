@@ -22,11 +22,7 @@ import java.util.List;
  * copies_available, which is of type int.
  */
 public class MessageDAO {
-    /**
-     * TODO: retrieve all books from the Book table.
-     * You only need to change the sql String.
-     * @return all Books.
-     */
+    
     public List<Message> getAllMessages(){
         Connection connection = ConnectionUtil.getConnection();
         List<Message> messages = new ArrayList<>();
@@ -48,11 +44,6 @@ public class MessageDAO {
         return messages;
     }
 
-    /**
-     * TODO: retrieve a book from the Book table, identified by its isbn.
-     * You only need to change the sql String and leverage PreparedStatement's setString and setInt methods.
-     * @return a book identified by isbn.
-     */
     public Message getMessageById(int id){
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -76,13 +67,6 @@ public class MessageDAO {
         return null;
     }
 
-    /**
-     * TODO: insert a book into the Book table.
-     * Unlike some of the other insert problems, the primary key here will be provided by the client as part of the
-     * Book object. Given the specific nature of an ISBN as both a numerical organization of books outside of this
-     * database, and as a primary key, it would make sense for the client to submit an ISBN when submitting a book.
-     * You only need to change the sql String and leverage PreparedStatement's setString and setInt methods.
-     */
     public Message insertMessage(Message message){
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -100,11 +84,7 @@ public class MessageDAO {
         }
         return null;
     }
-    /**
-     * TODO: retrieve all books from the Book table with copies_available over zero.
-     * You only need to change the sql String with a query that utilizes a WHERE clause.
-     * @returnall books with book count > 0.
-     */
+    
     public Message deleteMessageById(int id){
         Message message = getMessageById(id);
         Connection connection = ConnectionUtil.getConnection();

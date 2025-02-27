@@ -25,38 +25,19 @@ public class MessageService {
     public MessageService(){
         messageDAO = new MessageDAO();
     }
-    /**
-     * Constructor for a BookService when a BookDAO is provided.
-     * This is used for when a mock BookDAO that exhibits mock behavior is used in the test cases.
-     * This would allow the testing of BookService independently of BookDAO.
-     * There is no need to modify this constructor.
-     * @param bookDAO
-     */
+    
     public MessageService(MessageDAO messageDAO){
         this.messageDAO = messageDAO;
     }
-    /**
-     * TODO: Use the bookDAO to retrieve all books.
-     * @return all books.
-     */
+    
     public List<Message> getAllMessages() {
         return messageDAO.getAllMessages();
     }
-    /**
-     * TODO: Use the bookDAO to persist a book to the database.
-     * An ISBN will be provided in Book. Method should check if the book ISBN already exists before it attempts to
-     * persist it.
-     * @param book a book object.
-     * @return book if it was successfully persisted, null if it was not successfully persisted (eg if the book primary
-     * key was already in use.)
-     */
+    
     public Message addMessage(Message message) {
         return messageDAO.insertMessage(message);
     }
-    /**
-     * TODO: Use the bookDAO to retrieve a list of all books that have a bookCount above 0.
-     * @return all available books (bookCount over zero)
-     */
+
     public Message getMessageById(int id) {
         return messageDAO.getMessageById(id);
     }

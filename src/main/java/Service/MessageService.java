@@ -35,6 +35,10 @@ public class MessageService {
     }
     
     public Message addMessage(Message message) {
+        if(message.getMessage_text().length() > 255 || message.getMessage_text().isEmpty())
+        {
+            return null;
+        }
         return messageDAO.insertMessage(message);
     }
 
@@ -47,6 +51,10 @@ public class MessageService {
     }
 
     public Message updateMessageById(int id, Message text) {
+        if(text.getMessage_text().isEmpty())
+        {
+            return null;
+        }
         return messageDAO.UpdateMessage(id, text);
     }
 

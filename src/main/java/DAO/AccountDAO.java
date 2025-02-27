@@ -18,19 +18,19 @@ import java.util.List;
  */
 public class AccountDAO {
     
-    public Account getAccount(String username){
+    public Account getAccount(Account account){
         Connection connection = ConnectionUtil.getConnection();
         try {
             //Write SQL logic here
             String sql = "SELECT * FROM Account WHERE username = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, account.getUsername());
             ResultSet rs = preparedStatement.executeQuery();
-            while(rs.next()){
-                Account account = new Account(rs.getInt("account_id"),
+            if(rs.next()){
+                Account newAccount = new Account(rs.getInt("account_id"),
                 rs.getString("username"),
                 rs.getString("Password"));
-                return account;
+                return newAccount;
             }
         }catch(SQLException e){
             System.out.println(e.getMessage());
@@ -45,14 +45,16 @@ public class AccountDAO {
 //          automatically generate a primary key.
             String sql = "INSERT INTO Account (username, password) VALUES (?, ?);";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
             //write preparedStatement's setString method here.
             preparedStatement.setString(1, account.getUsername());
             preparedStatement.setString(2, account.getPassword());
             preparedStatement.executeUpdate();
-            ResultSet pkeyResultSet = preparedStatement.getGeneratedKeys();
-            if(pkeyResultSet.next()){
-                return account;
+
+            ResultSet  resultSet = preparedStatement.getGeneratedKeys();
+            
+            if(resultSet.next()){
+                int newId = resultSet.getInt("account_id");
+                return new Account(newId, account.getUsername(), account.getPassword());
             }
         }catch(SQLException e){
             System.out.println(e.getMessage());
@@ -67,16 +69,15 @@ public class AccountDAO {
 //          automatically generate a primary key.
             String sql = "SELECT * FROM Account WHERE username = ? AND password = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
             //write preparedStatement's setString method here.
             preparedStatement.setString(1, account.getUsername());
             preparedStatement.setString(2, account.getPassword());
-            preparedStatement.executeUpdate();
-            ResultSet pkeyResultSet = preparedStatement.getGeneratedKeys();
-            if(pkeyResultSet.next()){
-                int generated_account_id = (int) pkeyResultSet.getLong(1);
-                account.setAccount_id(generated_account_id);
-                return account;
+
+            ResultSet  resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int newId = resultSet.getInt("account_id");
+                
+                return new Account(newId, account.getUsername(), account.getPassword());
             }
         }catch(SQLException e){
             System.out.println(e.getMessage());

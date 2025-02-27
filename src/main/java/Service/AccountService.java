@@ -44,7 +44,7 @@ public class AccountService {
     
     public Account addAccount(Account account) 
     {
-        if(account.getUsername() != "" && account.getPassword().length() >= 4 && accountDAO.getAccount(account.getUsername()) == null)
+        if(account.getUsername() != "" && account.getPassword().length() >= 4 && accountDAO.getAccount(account) == null)
         {
             return accountDAO.insertAccount(account);
         }
